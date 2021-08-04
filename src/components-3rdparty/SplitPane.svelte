@@ -4,9 +4,9 @@
 	const dispatch = createEventDispatcher();
 
 	export let type;
-	export let pos = 50;
+	export let pos = 60;
 	export let fixed = false;
-	export let buffer = 42;
+	export let buffer = 1;
 	export let min;
 	export let max;
     function clamp(num, min, max) {

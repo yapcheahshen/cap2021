@@ -1,3 +1,4 @@
 ﻿node_modules
 *.json
 public
+*.7z

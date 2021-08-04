@@ -1,6 +1,6 @@
 <script>
     export let idx,id,checkdict=false;
-    import { pool } from 'pitaka/db';
+    import { pool } from 'pitaka/basket';
 	import {onMount,createEventDispatcher} from 'svelte'
     import { scale,slide ,draw,fade,fly} from 'svelte/transition';
 	let content='',mx=1,db,moving=false;

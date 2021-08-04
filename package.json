@@ -5,8 +5,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --no-clear --host",
-    "https": "sirv public --host 0.0.0.0 --cors --single --http2 --key key.pem --cert cert.pem"
+    "start": "sirv public --no-clear"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
