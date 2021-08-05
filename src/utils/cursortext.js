@@ -1,8 +1,12 @@
 export const getCursorText=ele=>{
     const sel=getSelection()
     let offset=sel.anchorOffset;
-    const ori=sel.anchorNode.parentElement.dataset.ori;
-    let str=ori||sel.anchorNode.data;
+    const psib=sel.anchorNode.previousSibling ;
+    if (psib && psib.dataset) {
+        offset+=parseInt(psib.dataset.offset)+psib.innerText.length;
+    }
+    const ori=sel.anchorNode.parentElement.dataset.ori
+    let str=(ori||sel.anchorNode.data).replace(/<.+?>/g,'');;
     let dictch=str.substr(offset,20);
 
     if (!dictch.match( /[\u3fff-\u9fff]/u )) {

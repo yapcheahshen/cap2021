@@ -1,19 +1,12 @@
 <script>
-    import {onMount} from 'svelte';
-    import {loadSettings,favoriteList,addCard} from './store.js'
+    import {favoritelist,addCard} from './store.js'
 
-    onMount(async ()=>{
-        const {favorite}=await loadSettings();
-        favoriteList.set(favorite)
-    })
     const go=addr=>{
         addCard({addr});
     }
-
-    
 </script>
 <div>
-    {#each $favoriteList as favor (favor)}
+    {#each $favoritelist as favor (favor)}
         <div><span class="btn" on:click={()=>go(favor)}>{favor}</span></div>
     {/each}
 </div>

@@ -1,7 +1,9 @@
 <script>
     import {opened} from 'pitaka';
+    import Downloader from './components/downloader.svelte';
     const baskets=opened();
-    import {addCard} from './store.js'
+    import {addCard} from './store'
+
     let namespaces=baskets.length?baskets[0][1].parse().namespaces:[];
     const showInfo=basket=>{
         namespaces=basket.parse().namespaces;
@@ -15,7 +17,7 @@
     {#each baskets as basket (basket)}
         {#if basket[1].header.title}
         <div><span class="btn" on:click={()=>showInfo(basket[1])}>{basket[0]}  {basket[1].header.title}
-        </span></div>
+        </span><Downloader basket={basket[0]}/></div>
         {/if}
     {/each}
     {#each namespaces as namespace (namespace)} 

@@ -1,44 +1,37 @@
 <script>
-    import {onMount,onDestroy} from 'svelte';
+    import {onMount,} from 'svelte';
     import {receive} from './crossfade.js'
-    import {mainStack,loadSettings, saveSettings,containers} from '../store.js'
+    import {mainstack,containers} from '../store.js'
     import CardView from './cardview.svelte'
     import {flip} from 'svelte/animate'
+    import {scrollToTop} from '../utils/event'
     import { scale,slide ,draw,fade,fly} from 'svelte/transition';
-    let stack=[],promoting;
-    const unsubscribe = mainStack.subscribe(n=>stack=n);
-    const totop=(event)=>{
-        let e=event.target;
-        while (e&& e.scrollTop==0) e=e.parentElement;
-        if (e)e.scrollTo(0,0)
-    }
-    onDestroy ( ()=>{
-        unsubscribe();
-        saveSettings({mainstack:stack})
-    })
+    import { get } from 'svelte/store';
+    let promoting;
+
     onMount(async ()=>{
-        const {mainstack}=await loadSettings();
-        mainStack.set(mainstack)
         containers.set({dictionary:CardView})
     })
     const removeItem=({detail})=>{
+        const stack=get(mainstack);
         stack.splice(detail,1);
-        mainStack.set(stack)
+        mainstack.set(stack)
     }
     const promoteItem=({detail})=>{
         promoting=detail;
+        const stack=get(mainstack);
         stack.unshift({addr:detail});
-        mainStack.set(stack)
+        mainstack.set(stack);
     }
 </script>
 <div>
-    {#each stack as item,idx (item)}
+    {#each $mainstack as item,idx (item)}
         <div in:receive={{key:promoting}} style="z-index:{100-idx}" out:fly={{x:200}} animate:flip={{duration:800}}>
         <CardView on:removeItem={removeItem} 
         on:promoteItem={promoteItem} idx={idx} addr={item.addr} depth=0/>
         </div>
     {/each}
-    <div class="endmarker"><span on:click={totop}>⇈⇈⇈</span></div>
+    <div class="endmarker"><span on:click={scrollToTop}>⇈⇈⇈</span></div>
 </div>
 
 <style>

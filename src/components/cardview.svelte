@@ -27,9 +27,9 @@
             for (let i=1;i<rawlines.length;i++) {
                 const t=rawlines[i][1];
                 if (t[0]=='#') break;
-                else if (t[0]!==':') {
+                // else if (t[0]!==':') {
                     lines.push(rawlines[i]);
-                }
+                // }
             }
         } 
         lineWidgets=lines.map(item=>({type:0,nline:item[0],text:item[1],basket}))
@@ -72,7 +72,7 @@
     }
 </script>
 
-<div style="background:hsl({90-depth*30} ,100%,95%);  padding-left: {(depth?3:0)}px;padding-right: {depth?3:0}px; z-index:{parseInt(depth)+10}" out:send={{key:addr}}>
+<div style="background:hsl({90-depth*30} , {depth=='0'?'0%':'100%'} ,95%);  padding-left: {(depth?3:0)}px;padding-right: {depth?3:0}px; z-index:{parseInt(depth)+10}" out:send={{key:addr}}>
     {#if parseInt(depth)}
     <SubCardMenu  on:close={close}  on:promote={promote}/>
     {:else} 

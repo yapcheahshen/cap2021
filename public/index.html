@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset='utf-8'>
+	<meta name='viewport' content='width=device-width,initial-scale=1'>
+	<meta name="theme-color" content="#336699">
+	<title>CAP 2021</title> 
+
+	<link rel='icon' type='image/png' href='favicon.svg'>
+	
+	<link rel='stylesheet' href='global.css'>
+	<link rel='stylesheet' href='main.css'>
+	<link rel='stylesheet' href='build/bundle.css'>
+	<link rel='manifest' href='manifest.json'>
+	
+	<link rel="apple-touch-icon" href="icon/ic_pitaka.png">
+	<meta name='apple-mobile-web-app-status-bar' content='#336699'>
+	
+	<script defer src='build/bundle.js'></script>
+	<script>
+	setTimeout(()=>{
+		if ("serviceWorker" in navigator && !document.getElementById('livereloadscript')) {
+			window.addEventListener('load',()=>{
+				navigator.serviceWorker.register("./sw.js").then(reg=>{
+					console.log("service worker registered");
+				}).catch(error=>{
+					alert(error);
+				});
+			});
+		}	
+	},1000);	
+	</script>
+
+</head>
+
+</html>

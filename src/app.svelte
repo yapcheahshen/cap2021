@@ -1,23 +1,20 @@
 <script>
-	import { onMount ,onDestroy} from 'svelte';
+	import { onMount } from 'svelte';
+	import { get} from 'svelte/store';
 	import {openBasket} from 'pitaka'
 	import StackView from './components/stackview.svelte'
 	import PaneWithPanel from './components-3rdparty/PaneWithPanel.svelte';
-	import Card from './components/card.svelte'
 	import DictTab from './dict-tab.svelte';
 	import TocTab from './toc-tab.svelte';
 	import SettingsTab from './settings-tab.svelte';
 	import FavoriteTab from './favorite-tab.svelte';
+	import SearchTab from './search-tab.svelte';
 	import {debounce} from './utils/event.js';
-	import {referPages,settings,updateSettings} from './store'
-	let cards2=[];
+	import {setting_icon,dictionary_icon,search_icon,reference_icon,
+	favorite_icon,note_icon,toc_icon,tool_icon,tools_icon} from './icons'
+	import {tab,panepos} from './store'
 
-	const unsubscribe = referPages.subscribe(n=>cards2=n);
 	let type='',ready=false,isFavorite=false;
-	let tab=$settings.tab||'tab-toc';
-
-	$: updateSettings({tab})
-
 	const mm=q=>window.matchMedia(q).matches;
 	window.onresize=()=>{
 		setTimeout(()=>{
@@ -25,16 +22,17 @@
 			else type='vertical'
 		})
 	}
-	onDestroy (unsubscribe);
+	
 	onMount(async ()=> {
+		
 		await openBasket('cct');
 		await openBasket('moedict');
 		ready=true;
 		onresize();
 	});
-	let panepos=$settings.panepos;
-	const setPanePos=debounce(()=>updateSettings({panepos}));
-	$: setPanePos(panepos)
+	let ppos=get(panepos);
+	const setPanePos=debounce(()=>panepos.set(ppos));
+	$: setPanePos(ppos)
 </script>
 
 
@@ -42,47 +40,50 @@
 {#if !ready}
 	<div>Loading</div>
 {:else}
-	<PaneWithPanel bind:pos={panepos} bind:type>
+	<PaneWithPanel bind:pos={ppos} bind:type>
 		<div slot="panel-left-menu">
 			top menu
-			
 		</div>
 		<div slot="panel-left">
 			<div class='spacer'></div>
 			<StackView/>
 		</div>
 		<div class="tabs" slot="panel-right-menu">
-		    <button class:active="{tab=='tab-toc'}" on:click="{() => tab = 'tab-toc'}" title='TOC'>☰</button>
-    		<button class='search' class:active="{tab=='tab-search'}" on:click="{()=>tab='tab-search'}" title='search'>⌕</button>
-    		<button class:active="{tab=='tab-dict'}" on:click="{()=>tab='tab-dict'}" title='dictionary'>ॐ</button>
-    		<button class:active="{tab=='tab-refer'}" on:click="{()=>tab='tab-refer'}" title='refer'>⇆</button>
-    		<button class:active="{tab=='tab-favorite'}" on:click="{()=>tab='tab-favorite'}" title='favorite'>★</button>
-    		<button class:active="{tab=='tab-note'}" on:click="{()=>tab='tab-note'}" title='note'>✎</button>
-    		<button class:active="{tab=='tab-settings'}" on:click="{()=>tab='tab-settings'}" title='settings'>⋮</button>
+		    <button class:active="{$tab=='tab-toc'}" on:click="{() => $tab = 'tab-toc'}" title='TOC' alt="☰">{@html toc_icon}</button>
+    		<button class='search' class:active="{$tab=='tab-search'}" on:click="{()=>$tab='tab-search'}" title='search'>{@html search_icon}</button>
+    		<button class:active="{$tab=='tab-dict'}" on:click="{()=>$tab='tab-dict'}" title='dictionary'>{@html dictionary_icon}</button>
+    		<button class:active="{$tab=='tab-refer'}" on:click="{()=>$tab='tab-refer'}" title='refer'>{@html reference_icon}</button>
+    		<button class:active="{$tab=='tab-favorite'}" on:click="{()=>$tab='tab-favorite'}" title='favorite' alt="★">{@html favorite_icon}</button>
+    		<button class:active="{$tab=='tab-note'}" on:click="{()=>$tab='tab-note'}" title='note' alt="✎">{@html note_icon}</button>
+			<button class:active="{$tab=='tab-tools'}" on:click="{()=>$tab='tab-tools'}" title='tools'>{@html tools_icon}</button>
+    		<button class:active="{$tab=='tab-settings'}" on:click="{()=>$tab='tab-settings'}" title='settings'>{@html setting_icon}</button>
 		</div>
 
 		<div slot="panel-right">
 			<div class='spacer'></div>
-			<div class="tab-content" class:visible={tab=='tab-toc'}>		
+			<div class="tab-content" class:visible={$tab=='tab-toc'}>		
 				<TocTab/>		
 			</div>
-			<div class="tab-content" class:visible={tab=='tab-search'}>		
+			<div class="tab-content" class:visible={$tab=='tab-search'}>
+				<SearchTab/>
 			</div>
-			<div class="tab-content" class:visible={tab=='tab-dict'}>
+			<div class="tab-content" class:visible={$tab=='tab-dict'}>
 				<DictTab/>
 			</div>
 
-			<div class="tab-content" class:visible={tab=='tab-refer'}>				
-				{#each cards2 as card, index}
-				<Card id={card.id} idx={card.i} />
-				{/each}
+			<div class="tab-content" class:visible={$tab=='tab-refer'}>				
+
 			</div>
-			<div class="tab-content" class:visible={tab=='tab-favorite'}>
+			<div class="tab-content" class:visible={$tab=='tab-favorite'}>
 				<FavoriteTab/>
 			</div>
-			<div class="tab-content" class:visible={tab=='tab-note'}>		
+			<div class="tab-content" class:visible={$tab=='tab-note'}>
+				notes		
 			</div>
-			<div class="tab-content" class:visible={tab=='tab-settings'}>
+			<div class="tab-content" class:visible={$tab=='tab-tools'}>	
+				tools	
+			</div>
+			<div class="tab-content" class:visible={$tab=='tab-settings'}>
 				<SettingsTab/>	
 			</div>
 		</div>
@@ -90,6 +91,7 @@
 {/if}
 
 <style>
+	:root {--selected : #333; --unselected: #999 ; --hover: orange}
 	.spacer {height:2em}
 	button {
 		background: rgba(0,0,0,0);
@@ -100,16 +102,22 @@
 		cursor:pointer;
 		border-bottom: 3px solid transparent;
 		/* padding: 12px 12px 8px 12px; */
-		color: #999;
+		color: var(--unselected);
+		fill : var(--unselected);
 		border-radius: 0;
 	}
 	
 	button.active {
 		border-bottom: 3px solid darkorange;
-		color: #333;
+		color:var(--selected);
+		fill: var(--selected) ;
 	}
 
-	button.search {transform:rotateY(180deg)}
+	button:hover { 
+		fill: var(--hover)
+	}
+
+	/* button.search {transform:rotateY(180deg)} */
 
 	.tab-content {
 		position: absolute;
