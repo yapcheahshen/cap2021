@@ -22,14 +22,14 @@
 		background:rgba(0,0,0,0.2);
 		border-radius: 5px;
 		position:fixed;
-		z-index: 999;
+		/* z-index: 999; */
 	}
 	.panel-right-menu {
 		height:30px;
 		overflow-y: clip;
 		background:rgba(255,255,255,0.9);
 		position:fixed;
-		z-index: 999;
+		/* z-index: 999; */
 	}
 
 </style>

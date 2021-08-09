@@ -35,7 +35,7 @@ export default {
 		format: 'umd',
 		name: 'app',
 		file: 'public/build/bundle.js',
-		globals:{'fs':'fs'}
+		globals:{'fs':'fs','hanziyin':'hanziyin'}
 	},
 	plugins: [
 		svelte({

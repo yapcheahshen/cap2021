@@ -1,8 +1,8 @@
 <script>
     import {opened} from 'pitaka';
-    import Downloader from './components/downloader.svelte';
+    import Downloader from '../components/downloader.svelte';
     const baskets=opened();
-    import {addCard} from './store'
+    import {addCard} from '../control/cards.js'
 
     let namespaces=baskets.length?baskets[0][1].parse().namespaces:[];
     const showInfo=basket=>{

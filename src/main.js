@@ -1,7 +1,5 @@
 import App from './app.svelte';
 
-var app = new App({
+export default new App({
 	target: document.body
 });
-
-export default app; 

@@ -1,6 +1,6 @@
 <script>
-    import {favoritelist,addCard} from './store.js'
-
+    import {favoritelist} from '../store.js'
+    import {addCard} from '../control/cards'
     const go=addr=>{
         addCard({addr});
     }

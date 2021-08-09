@@ -4,15 +4,18 @@
 	import {openBasket} from 'pitaka'
 	import StackView from './components/stackview.svelte'
 	import PaneWithPanel from './components-3rdparty/PaneWithPanel.svelte';
-	import DictTab from './dict-tab.svelte';
-	import TocTab from './toc-tab.svelte';
-	import SettingsTab from './settings-tab.svelte';
-	import FavoriteTab from './favorite-tab.svelte';
-	import SearchTab from './search-tab.svelte';
+	import DictTab from './tabs/dict-tab.svelte';
+	import TocTab from './tabs/toc-tab.svelte';
+	import SettingsTab from './tabs/settings-tab.svelte';
+	import FavoriteTab from './tabs/favorite-tab.svelte';
+	import SearchTab from './tabs/search-tab.svelte';
 	import {debounce} from './utils/event.js';
 	import {setting_icon,dictionary_icon,search_icon,reference_icon,
 	favorite_icon,note_icon,toc_icon,tool_icon,tools_icon} from './icons'
 	import {tab,panepos} from './store'
+	import Notifications from './components-3rdparty/notifications'
+	import HzyGrid from './components/hzygrid.svelte';
+import Notification from '../../svelte_components/svelte-notifications/src/components/Notification.svelte';
 
 	let type='',ready=false,isFavorite=false;
 	const mm=q=>window.matchMedia(q).matches;
@@ -22,9 +25,8 @@
 			else type='vertical'
 		})
 	}
-	
+
 	onMount(async ()=> {
-		
 		await openBasket('cct');
 		await openBasket('moedict');
 		ready=true;
@@ -36,7 +38,7 @@
 </script>
 
 
-
+<Notifications>
 {#if !ready}
 	<div>Loading</div>
 {:else}
@@ -81,7 +83,7 @@
 				notes		
 			</div>
 			<div class="tab-content" class:visible={$tab=='tab-tools'}>	
-				tools	
+				<HzyGrid/>
 			</div>
 			<div class="tab-content" class:visible={$tab=='tab-settings'}>
 				<SettingsTab/>	
@@ -89,6 +91,7 @@
 		</div>
 	</PaneWithPanel>
 {/if}
+</Notifications>
 
 <style>
 	:root {--selected : #333; --unselected: #999 ; --hover: orange}

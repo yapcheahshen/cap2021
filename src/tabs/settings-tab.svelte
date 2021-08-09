@@ -1,6 +1,6 @@
 <script>
     import { get } from 'svelte/store';
-    import {tosim} from './store.js'
+    import {tosim} from '../store.js'
 
     const switchToSim=()=>{
         let ts=get(tosim)+1;

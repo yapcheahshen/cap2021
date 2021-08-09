@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from 'svelte'
-    import {isFavorite} from '../store';
+    import {isFavorite} from '../control/favorites';
     const dispatch = createEventDispatcher()
     export let addr='';
 

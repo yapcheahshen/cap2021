@@ -5,7 +5,7 @@
     import SubCardMenu from './subcardmenu.svelte'
     import {send} from './crossfade.js'
     import { createEventDispatcher } from 'svelte'
-    import {setFavorite} from '../store'
+    import {setFavorite} from '../control/favorites'
     const dispatch = createEventDispatcher()
 
     import Linesview from './linesview.svelte';
@@ -14,6 +14,9 @@
 
     onMount(async ()=>{
         const r=await parse(addr);
+        //字典類 addr 可能會變短，
+        //dispatch dis 
+        
         if (!r || !r.basket) {
             dispatch('close', idx)
             return;

@@ -2,7 +2,27 @@
 Computer-Aided-Pariyatti, keywords: PWA, Svelte, Pitaka engine
 
 ## TODO
-   use actions to implement toSim
+   card pull down menu on left ,hamburger 
+   card 的標題
+   
+   autofolding nested text (學生字典) with \t or "-" indent
+   moedict 的引文摺疊 collapseview
+   只摺疊一層。如太長的段。
+
+   上下段 (字典不用，只適合可連續閱讀的)
+
+   查不同的字典，(moezd, xszd , kxzd , 部件及unihan查詢)
+   
+   模式決定點本文的動作
+   閱讀模式顯示超連結
+   搜尋模式，點一下查關鍵字
+   詞典模式不顯示超連結，點字查字典
+     只要匯出一個長名單即為詞典，如開放文學。
+     設《.》掃，點一下顯示書的摘要。
+     
+   參考模式：找書名 列出所有引文(並做超連結)，並列出反向的連結，
+   筆記模式，點一下加注筆記
+
 
    decorating basket text
    超連結 

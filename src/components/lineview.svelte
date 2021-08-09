@@ -1,11 +1,15 @@
 <script>
     import { createEventDispatcher } from 'svelte'
-    import {getCursorText} from '../utils/cursortext';
-    import {tosim,addCard} from '../store.js'
+    import {getCursorText,copySelection} from '../utils/cursortext';
+    import {tosim} from '../store.js'
+    import {addCard} from '../control/cards.js'
     import simplifiedChinese from '../actions/tosim.js'
     import hyperlink from '../actions/hyperlink.js'
+    import {getNotificationsContext} from '../components-3rdparty/notifications/'
     const dispatch = createEventDispatcher()
     export let basket='', nline=0, text='' ,idx=0;
+
+    const {addNotification } = getNotificationsContext();
 
     const click=e=>{
         if (e.target.dataset.target) {
@@ -17,6 +21,13 @@
         }
         const {tofind,offset}=getCursorText(e.target);
         dispatch('cursorText',{tofind,basket,nline,idx,offset} );
+
+        copySelection(0,tofind.length);
+        addNotification({
+            id: new Date().getTime(),
+            text:"copied!"+tofind.substr(0,10),
+            removeAfter:4000,
+            position:'top-right'})
     }
 </script>
 <div on:click={click}>
